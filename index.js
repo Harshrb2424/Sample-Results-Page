@@ -1,3 +1,9 @@
+window.onload = function() {
+    var inputField = document.querySelector('input[type="text"]');
+    if(inputField) {
+        inputField.focus();
+    }
+}
 $(document).ready(function () {
   function toTitleCase(str) {
     return str
@@ -24,6 +30,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var rollNumber = $('input[type="text"]').val();
+        
         var password = $('input[type="password"]').val();
 
         if (rollNumber === password && rollNumber.length === 10) {
@@ -31,15 +38,16 @@ $(document).ready(function () {
           console.log(result);
           console.log(typeof result);
           if (typeof result === "object") {
-            $("main").hide();
+            $("main").fadeOut(200);
 
             $(".result h1").text(toTitleCase(result.data.Details["NAME"]));
             $(".result h2").text(result.data.Details["Roll_No"]);
-            $(".result").show();
+            $(".result").fadeIn(1000);
             $.each(result.data.Results, function (semester, subjects) {
               var semesterDiv = $("<div>")
                 .attr("id", semester)
                 .appendTo("body");
+                semesterDiv.fadeIn(1000);
               console.log(semester);
               if (semester == "Total") {
                 $("<h1>").text("Current CGPA:").appendTo(semesterDiv);
@@ -54,6 +62,7 @@ $(document).ready(function () {
 
               semester["Total"] &&
                 $("<h1>").text(semester["Total"]).appendTo(subjectDiv);
+                
               semester != "Total" &&
                 $("<h1>").text("Subject").appendTo(subjectDiv);
               semester != "Total" &&
@@ -82,7 +91,10 @@ $(document).ready(function () {
                     .text("SGPA: " + subject)
                     .appendTo(subjectDiv);
               });
+            //   semesterDiv.fadeIn();
+            //   $('#Total').fadeIn();
             });
+            
           } else {
             $("p").text("Error: Student Not Found");
           }
@@ -91,6 +103,7 @@ $(document).ready(function () {
             "Error: Hall Ticket Number and Password do not match, or length is not 10."
           );
         }
+        
       });
 
       function searchByRollNumber(rollNumberToFind) {
