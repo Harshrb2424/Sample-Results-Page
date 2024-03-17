@@ -18,7 +18,7 @@ h4 {
 }
 body {
   background-image: url(https://png.pngtree.com/background/20210709/original/pngtree-shading-background-abstract-colorful-background-colorful-art-picture-image_938007.jpg);
-  background-size: cover;
+  background-size: contain;
   backdrop-filter: blur(50px);
   width: 100%;
   min-height: 100vh;
@@ -96,12 +96,29 @@ body > div > div > h1 {
 
 @media only screen and (max-width: 768px) {
   body > div > div > h1 {
-    font-size: 1em;
+    font-size: 0.75em;
   }
   main {
     width: auto;
   }
   form > * {
     margin: 0 20px;
+  }
+  body{
+  background-image: url(https://watermark.lovepik.com/photo/40072/8601.jpg_wh1200.jpg);
+  /* background-image: url(https://thumbs.dreamstime.com/b/abstract-bluesky-water-color-background-illustration-texture-design-abstract-bluesky-water-color-background-illustration-196808032.jpg); */
+  background-size: cover;
+  }
+  h1{
+    font-size: 1.5em;
+  }
+  h2{
+    font-size: 1em;
+  }
+  h3{
+    font-size: 0.75em;
+  }
+  #Total h1{
+    font-size: 1.25em;
   }
 }
