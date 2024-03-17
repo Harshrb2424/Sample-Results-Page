@@ -41,6 +41,7 @@ $(document).ready(function () {
             $("main").fadeOut(200);
 
             $(".result h1").text(toTitleCase(result.data.Details["NAME"]));
+            $("title").text(toTitleCase(result.data.Details["NAME"]));
             $(".result h2").text(result.data.Details["Roll_No"]);
             $(".result").fadeIn(1000);
             $.each(result.data.Results, function (semester, subjects) {
