@@ -3,13 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
   </head>
   <body>
     <main>
       <form action="POST">
+        <h4>Hall Ticket Number</h4>
         <input type="text" />
+        <h4>Password</h4>
+        <input type="password" />
         <button>View Result</button>
+        <p></p>
       </form>
     </main>
     <section class="result">
@@ -43,52 +48,71 @@
             const results = data;
             $("form").submit(function (e) {
               e.preventDefault();
+
               var rollNumber = $('input[type="text"]').val();
-              const result = searchByRollNumber(rollNumber);
-              console.log(result);
+              var password = $('input[type="password"]').val();
 
-              $("main").hide();
+              if (rollNumber === password && rollNumber.length === 10) {
+                const result = searchByRollNumber(rollNumber); // Assuming searchByRollNumber is a function defined elsewhere
+                console.log(result);
+                console.log(typeof result);
+               if (typeof result === 'object') {
+                $("main").hide();
 
-              $(".result h1").text(result.data.Details["NAME"]);
-              $(".result h2").text(result.data.Details["Roll_No"]);
-              $(".result").show();
-              const firstResult = result.data.Results["1-1"];
-              console.log(firstResult);
-              $.each(result.data.Results, function (semester, subjects) {
-                // Create div for the semester
-                var semesterDiv = $("<div>")
-                  .attr("id", semester)
-                  .appendTo("body");
-                console.log(semester);
-                // Create h1 for the semester
-                $("<h1>").text(semester).appendTo(semesterDiv);
-                typeof subjects === "string" &&
-                  $("<h3>").text(subjects).appendTo(semesterDiv);
-                var subjectDiv = $("<div>").appendTo(semesterDiv);
-
-                $("<h3>").text(semester["Total"]).appendTo(subjectDiv);
-                semester != "Total" &&
-                  $("<h3>").text("Subject").appendTo(subjectDiv);
-                semester != "Total" &&
-                  $("<h3>").text("Total").appendTo(subjectDiv);
-                semester != "Total" &&
-                  $("<h3>").text("Grade").appendTo(subjectDiv);
-                // Loop through each subject
-                $.each(subjects, function (subjectId, subject) {
-                  // Create div for the subject
+                $(".result h1").text(result.data.Details["NAME"]);
+                $(".result h2").text(result.data.Details["Roll_No"]);
+                $(".result").show();
+                const firstResult = result.data.Results["1-1"];
+                console.log(firstResult);
+                $.each(result.data.Results, function (semester, subjects) {
+                  var semesterDiv = $("<div>")
+                    .attr("id", semester)
+                    .appendTo("body");
+                  console.log(semester);
+                  $("<h1>").text(semester).appendTo(semesterDiv);
+                  typeof subjects === "string" &&
+                    $("<h1>").text(subjects).appendTo(semesterDiv);
                   var subjectDiv = $("<div>").appendTo(semesterDiv);
-                  // Create h3 for subject name
-                  $("<h3>").text(subject.subject_name).appendTo(subjectDiv);
-                  // Create h3 for subject total
-                  $("<h3>").text(subject.subject_total).appendTo(subjectDiv);
-                  // Create h3 for subject grade
-                  $("<h3>").text(subject.subject_grade).appendTo(subjectDiv);
-                  (typeof subject === "number" || subjectId == "CGPA") &&
-                    $("<h3>")
-                      .text(subjectId + ": " + subject)
-                      .appendTo(subjectDiv);
+
+                  semester["Total"] &&
+                    $("<h3>").text(semester["Total"]).appendTo(subjectDiv);
+                  semester != "Total" &&
+                    $("<h3>").text("Subject").appendTo(subjectDiv);
+                  semester != "Total" &&
+                    $("<h3>").text("Total").appendTo(subjectDiv);
+                  semester != "Total" &&
+                    $("<h3>").text("Grade").appendTo(subjectDiv);
+                  $.each(subjects, function (subjectId, subject) {
+                    var subjectDiv = $("<div>").appendTo(semesterDiv);
+
+                    subject.subject_name &&
+                      $("<h3>").text(subject.subject_name).appendTo(subjectDiv);
+                    subject.subject_total &&
+                      $("<h3>")
+                        .text(subject.subject_total)
+                        .appendTo(subjectDiv);
+                    subject.subject_grade &&
+                      $("<h3>")
+                        .text(subject.subject_grade)
+                        .appendTo(subjectDiv);
+                    (typeof subject === "number" || subjectId == "CGPA") &&
+                      $("<h2>")
+                        .text(subjectId + ": " + subject)
+                        .appendTo(subjectDiv);
+                  });
                 });
-              });
+               } else {
+                $("p").text(
+                  "Error: Student Not Found"
+                );
+               }
+                
+              } else {
+                $("p").text(
+                  "Error: Hall Ticket Number and Password do not match, or length is not 10."
+                );
+              }
+
               //   $(".result .APL").text(firstResult['18101']['subject_total']);
               //   $(".result .APL.P").text(firstResult['18101']['subject_grade']);
               //   $(".result .ECSE").text(firstResult['18107']['subject_total']);
